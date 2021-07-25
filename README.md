@@ -1,4 +1,4 @@
-# HW-UI  一个VUE UI组件
+# FJHW-UI  一个VUE UI组件
 
 [![Build Status](https://travis-ci.com/codelzb/HW-UI.svg?branch=main)](https://travis-ci.com/codelzb/HW-UI)
 

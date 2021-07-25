@@ -22,7 +22,9 @@
     #app {
       margin: 20px;
     }
-
+    .gl{
+      margin: 20px;
+    }
     body {
       font-size: var(--font-size);
     }
@@ -34,7 +36,12 @@
 </head>
 <body>
   <div id="app">
-    
+    <div class="gl">
+      <h-input readonly></h-input>
+      <h-input disabled></h-input>
+      <h-input error="请输入中文"></h-input>
+      <h-input  v-model="message"></h-input>
+    </div>
     <h-button icon="qixiangjulogo" position='right'>
       按钮
     </h-button>

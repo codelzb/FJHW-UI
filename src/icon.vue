@@ -5,7 +5,9 @@
       </svg>
 </template>
 <script>
+import './svg'
 export default {
+  name:'Hicon',
   props:{
       name:{}
   },

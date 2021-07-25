@@ -5,7 +5,7 @@
 </template>
 <script>
   export default {
-    name: 'HWButtonGroup',
+    name: 'HButtonGroup',
     mounted () {
       for (let node of this.$el.children) {
         let name = node.nodeName.toLowerCase()

@@ -11,7 +11,7 @@
 <script>
   import Icon from './icon'
   export default {
-    name: 'hButton',
+    name: 'HButton',
     components: {
       'h-icon': Icon
     },
