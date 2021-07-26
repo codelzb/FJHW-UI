@@ -5,6 +5,10 @@
 </template>
 <script>
   let validator = (value) => {
+    if(value.constructor==Number&&value<=24){
+      value=JSON.parse(JSON.stringify({span:value,offset:value}))
+      console.log('value',value);
+    }
     let keys = Object.keys(value)
     let valid = true
     keys.forEach(key => {
@@ -23,10 +27,11 @@
       offset: {
         type: [Number, String]
       },
-      ipad: {type: Object, validator,},
-      narrowPc: {type: Object, validator,},
-      pc: {type: Object, validator,},
-      widePc: {type: Object, validator,}
+      xs: {type: [Number,Object], validator,},
+      sm: {type: [Number,Object], validator,},
+      md: {type: [Number,Object], validator,},
+      lg: {type: [Number,Object], validator,},
+      xl: {type: [Number,Object], validator,}
     },
     data () {
       return {
@@ -39,19 +44,22 @@
         let array = []
         if (obj.span) { array.push(`h-col-${str}${obj.span}`) }
         if (obj.offset) { array.push(`h-offset-${str}${obj.offset}`) }
+        if(obj.constructor==Number&&obj<=24){array.push(`h-col-${str}${obj}`,`h-offset-${str}${obj}`)}
         return array
       }
     },
     computed: {
       colClass () {
-        let {span, offset, ipad, narrowPc, pc, widePc} = this
+        let {span, offset, xs, sm, md, lg,xl} = this
         let createClasses = this.createClasses
         return [
           ...createClasses({span, offset}),
-          ...createClasses(ipad, 'h-ipad-'),
-          ...createClasses(narrowPc, 'h-narrow-pc-'),
-          ...createClasses(pc, 'h-pc-'),
-          ...createClasses(widePc, 'h-wide-pc-'),
+          ...createClasses(xs, 'xs-'),
+          ...createClasses(sm, 'sm-'),
+          ...createClasses(md, 'md-'),
+          ...createClasses(lg, 'lg-'),
+          ...createClasses(xl, 'xl-'),
+
         ]
       },
       colStyle () {
@@ -65,6 +73,7 @@
 </script>
 <style  lang="scss">
   .h-col {
+    border: 1px red solid;
     $class-prefix: h-col-;
     @for $n from 1 through 24 {
       &.#{$class-prefix}#{$n} {
@@ -78,55 +87,69 @@
       }
     }
     @media (min-width: 577px) {
-      $class-prefix: h-col-ipad-;
+      $class-prefix: h-col-xs-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           width: ($n / 24) * 100%;
         }
       }
-      $class-prefix: h-offset-ipad-;
+      $class-prefix: h-offset-xs-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           margin-left: ($n / 24) * 100%;
         }
       }
     }
-    @media (min-width: 769px){ // 770
-      $class-prefix: h-col-narrow-pc-;
+    @media (min-width: 768px){
+      $class-prefix: h-col-sm-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           width: ($n / 24) * 100%;
         }
       }
-      $class-prefix: h-offset-narrow-pc-;
+      $class-prefix: h-offset-sm-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           margin-left: ($n / 24) * 100%;
         }
       }
     }
-    @media (min-width: 993px) {
-      $class-prefix: h-col-pc-;
+    @media (min-width: 992px) {
+      $class-prefix: h-col-md-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           width: ($n / 24) * 100%;
         }
       }
-      $class-prefix: h-offset-pc-;
+      $class-prefix: h-offset-md-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           margin-left: ($n / 24) * 100%;
         }
       }
     }
-    @media (min-width: 1201px) {
-      $class-prefix: h-col-wide-pc-;
+    @media (min-width: 1200px) {
+      $class-prefix: h-col-lg-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           width: ($n / 24) * 100%;
         }
       }
-      $class-prefix: h-offset-wide-pc-;
+      $class-prefix: h-offset-lg-;
+      @for $n from 1 through 24 {
+        &.#{$class-prefix}#{$n} {
+          margin-left: ($n / 24) * 100%;
+        }
+      }
+    }
+    @media (min-width: 1920px) {
+      $class-prefix: h-col-xl-;
+      @for $n from 1 through 24 {
+        &.#{$class-prefix}#{$n} {
+          width: ($n / 24) * 100%;
+        }
+      }
+      $class-prefix: h-offset-xl-;
       @for $n from 1 through 24 {
         &.#{$class-prefix}#{$n} {
           margin-left: ($n / 24) * 100%;
