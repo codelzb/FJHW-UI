@@ -4,10 +4,14 @@ import Button from './button.vue'
 import Icon from './icon.vue'
 import ButtonGroup from './button-group.vue'
 import Input from './input.vue'
+import Row from './row.vue'
+import Col from './col.vue'
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
 Vue.component('h-button-group', ButtonGroup)
 Vue.component('h-input', Input)
+Vue.component('h-row', Row)
+Vue.component('h-col', Col)
 
 new Vue({
   el: '#app',
@@ -29,9 +33,7 @@ new Vue({
 import chai from 'chai'
 import spies from 'chai-spies'
 chai.use(spies)
-
 const expect = chai.expect
-
 try {
 
   // 单元测试

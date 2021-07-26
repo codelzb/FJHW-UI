@@ -5,7 +5,7 @@
   <meta name="viewport"
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>HW</title>
+  <title>UI框架</title>
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box;}
     html {
@@ -32,10 +32,25 @@
     
   </style>
   <style>
+    .demo {
+      background: #ddd;
+      border: 1px solid #666;
+      height: 100px;
+    }
   </style>
 </head>
 <body>
   <div id="app">
+    <div class="gl">
+      <h-row gutter="20">
+        <h-col span="2">2222222222222</h-col>
+        <h-col span="2">222222222222222</h-col>
+        <h-col span="4">2222222222222</h-col>
+        <h-col span="4">222222222222222</h-col>
+        <h-col span="4">2222222222222</h-col>
+        <h-col span="4" offset="2">333</h-col>
+      </h-row>
+    </div>
     <div class="gl">
       <h-input readonly></h-input>
       <h-input disabled></h-input>
