@@ -27,6 +27,7 @@ export default {
         showClose: false,
         iconClass:null,
         useHTML:false,
+        onClose:null,
         offset:50
       },
     };
@@ -40,6 +41,9 @@ export default {
   },
   methods: {
     closeMessage() {
+      if (this.options.onClose && typeof this.options.onClose === 'function') {
+          this.options.onClose(this)
+      }
       this.close();
     },
     autoClose() {
@@ -110,16 +114,6 @@ export default {
   &.warning {
     color: $warning;
     background-color: #fdf6ec;
-  }
-}
-@keyframes slide-down {
-  from {
-    transform: translateY(-100%) translateX(-50%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) translateX(-50%);
-    opacity: 1;
   }
 }
 .slide-message-enter-active,

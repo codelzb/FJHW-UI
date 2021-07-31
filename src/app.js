@@ -44,7 +44,10 @@ new Vue({
     showToast1(){
       this.$message.error({
         message: '这是一条错误消息，并且不会自动关闭',
-        showClose: true
+        showClose: true,
+        onClose:(e)=>{
+          console.log('1111111111111',e);
+        }
     })
     },
     showToast2(){
