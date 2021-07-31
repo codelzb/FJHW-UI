@@ -15,11 +15,11 @@ describe('Button', () => {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo'
+        icon: 'error'
       }
     }).$mount()
     const useElement = vm.$el.querySelector('use')
-    expect(useElement.getAttribute('xlink:href')).to.equal('#icon-qixiangjulogo')
+    expect(useElement.getAttribute('xlink:href')).to.equal('#icon-error')
     vm.$destroy()
   })
 
@@ -27,7 +27,7 @@ describe('Button', () => {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'loading',
         loading: true
       }
     }).$mount()
@@ -43,26 +43,25 @@ describe('Button', () => {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'loading'
       }
     }).$mount(div)
-    const icon = vm.$el.querySelector('svg')
+    const icon = vm.$el.querySelector('span')
     expect(getComputedStyle(icon).order).to.eq('1')
     vm.$el.remove()
     vm.$destroy()
   })
-
   it('设置 iconPosition 可以改变 order', () => {
     const div = document.createElement('div')
     document.body.appendChild(div)
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'error',
         position: 'right'
       }
     }).$mount(div)
-    const icon = vm.$el.querySelector('svg')
+    const icon = vm.$el.querySelector('span')
     expect(getComputedStyle(icon).order).to.eq('2')
     vm.$el.remove()
     vm.$destroy()
@@ -71,7 +70,7 @@ describe('Button', () => {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'error',
       }
     }).$mount()
 

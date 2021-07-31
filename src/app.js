@@ -94,6 +94,7 @@ import chai from 'chai'
 import spies from 'chai-spies'
 chai.use(spies)
 const expect = chai.expect
+/*
 try {
 
   // 单元测试
@@ -183,3 +184,4 @@ try {
     console.error(error.message)
   })
 }
+*/

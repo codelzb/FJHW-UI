@@ -3,10 +3,8 @@
     <div class="h-message" :class="{ [`${options.type}`]: true }" :style="positionStyle" v-show="visible">
       <h-icon :name="options.iconClass" class="h-icon" v-if="options.iconClass"></h-icon>
       <h-icon :name="options.type" class="h-icon" v-else></h-icon>
-      <slot>
-        <p v-if="!options.useHTML">{{ options.message }}</p>
-        <p v-else v-html="options.message"></p>
-      </slot>
+      <p v-if="!options.useHTML">{{ options.message }}</p>
+      <p v-else v-html="options.message"></p>
       <h-icon name="close" class="h-icon close" v-if="options.showClose" @click="closeMessage" style="width:12px;height:12px;"></h-icon>
     </div>
   </transition>

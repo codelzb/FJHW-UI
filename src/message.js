@@ -18,10 +18,6 @@ const Message = function(options) {
     data:{options:options}
   })
   instance.id = id;
-  if (instance.message) {
-    instance.$slots.default = [instance.message];
-    instance.message = null;
-  }
   instance.$mount();
   document.body.appendChild(instance.$el);
   instance.visible = true;
