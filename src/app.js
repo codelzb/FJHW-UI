@@ -11,6 +11,8 @@ import Header from './header.vue'
 import Sider from './sider.vue'
 import Content from './content.vue'
 import Footer from './footer.vue'
+import Toast from './message.vue'
+import plugin from './message.js'
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
 Vue.component('h-button-group', ButtonGroup)
@@ -22,7 +24,9 @@ Vue.component('h-header', Header)
 Vue.component('h-sider', Sider)
 Vue.component('h-content', Content)
 Vue.component('h-footer', Footer)
-
+Vue.component('g-toast', Toast)
+// Vue.use(plugin)
+Vue.prototype.$message = plugin;
 new Vue({
   el: '#app',
   data: {
@@ -36,6 +40,49 @@ new Vue({
   methods: {
     inputChange (e) {
       console.log(e)
+    },
+    showToast1(){
+      this.$message.error({
+        message: '这是一条错误消息，并且不会自动关闭',
+        showClose: true
+    })
+    },
+    showToast2(){
+      this.$message.info({
+        message: '<strong>aaaa额额额</strong>',
+        iconClass:'loading',
+        useHTML:true,
+        showClose: true,
+        offset:300
+    })
+    },
+    showToast3(){
+      this.$message.close()
+    },
+    showToast4(){
+      this.$message.success({
+        message: '这是一条成功消息，并且不会自动关闭',
+        showClose: true
+    })
+    },
+    showToast5(){
+      this.$message.warning({
+        message: '这是一条警告消息，并且不会自动关闭',
+        showClose: true
+    })
+    },
+    showToast(position){
+      this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。你的智商需要充值！`, {
+        position,
+        enableHtml: false,
+        closeButton: {
+          text: '已充值',
+          callback () {
+            console.log('他说已经充值智商了')
+          }
+        },
+        autoClose: 3,
+      })
     }
   }
 })
@@ -52,13 +99,13 @@ try {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo'
+        icon: 'loading'
       }
     })
     vm.$mount()
     let useElement = vm.$el.querySelector('use')
     let href = useElement.getAttribute('xlink:href')
-    expect(href).to.eq('#icon-qixiangjulogo')
+    expect(href).to.eq('#icon-loading')
     vm.$el.remove()
     vm.$destroy()
   }
@@ -66,14 +113,14 @@ try {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'loading',
         loading: true
       }
     })
     vm.$mount()
     let useElement = vm.$el.querySelector('use')
     let href = useElement.getAttribute('xlink:href')
-    expect(href).to.eq('#icon-shezhi')
+    expect(href).to.eq('#icon-loading')
     vm.$el.remove()
     vm.$destroy()
   }
@@ -83,7 +130,7 @@ try {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo'
+        icon: 'loading'
       }
     })
     vm.$mount(div)
@@ -99,7 +146,7 @@ try {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'loading',
         position: 'right'
       }
     })
@@ -114,7 +161,7 @@ try {
     const Constructor = Vue.extend(Button)
     const vm = new Constructor({
       propsData: {
-        icon: 'qixiangjulogo',
+        icon: 'loading',
       }
     })
     vm.$mount()

@@ -2,7 +2,7 @@
   <button class="h-button" :class="{[`icon-${position}`]: true}"
     @click="$emit('click')">
     <h-icon class="icon" v-if="icon && !loading" :name="icon"></h-icon>
-    <h-icon class="loading icon" v-if="loading" name="shezhi"></h-icon>
+    <h-icon class="loading icon" v-if="loading" name="loading"></h-icon>
     <div class="content">
       <slot/>
     </div>

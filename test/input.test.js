@@ -52,7 +52,7 @@ describe('Input', () => {
                 }
             }).$mount()
             const el = vm.$el.querySelector('use')
-            expect(el.getAttribute('xlink:href')).to.equal('#icon-shanchu')
+            expect(el.getAttribute('xlink:href')).to.equal('#icon-error')
             const elm = vm.$el.querySelector(".errorMessage")
             expect(elm.innerText).to.equal('错了')
             vm.$destroy()
