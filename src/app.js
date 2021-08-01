@@ -15,6 +15,7 @@ import plugin from './message.js'
 import Tabs from './tabs'
 import TabsTitle from './tabs-title'
 import TabsPane from './tabs-pane'
+import Popover from './popover.vue'
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
 Vue.component('h-button-group', ButtonGroup)
@@ -30,6 +31,7 @@ Vue.prototype.$message = plugin;
 Vue.component('h-tabs', Tabs)
 Vue.component('h-tabs-title', TabsTitle)
 Vue.component('h-tabs-pane', TabsPane)
+Vue.component('h-popover', Popover)
 new Vue({
   el: '#app',
   data: {

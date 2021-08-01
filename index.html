@@ -27,6 +27,7 @@
 
     .gl {
       margin: 20px;
+      margin-top: 100px;
     }
 
     body {
@@ -51,6 +52,24 @@
 <body>
   <div id="app">
     <div class="gl">
+      <div class="gl">
+        <h-popover  trigger='hover'> 
+          <template slot="content">弹出内容1</template>
+          <h-button>点击</h-button>
+        </h-popover>
+        <h-popover position="left">
+          <template slot="content">弹出内容1</template>
+          <h-button>点击</h-button>
+        </h-popover>
+        <h-popover position="right">
+          <template slot="content">弹出内容1</template>
+          <h-button>点击</h-button>
+        </h-popover>
+        <h-popover position="bottom">
+          <template slot="content">弹出内容1</template>
+          <h-button>点击</h-button>
+        </h-popover>
+      </div>
       <h-tabs v-model="selectedTab">
         <template slot="title">
                 <h-tabs-title name="social">社会</h-tabs-title>
