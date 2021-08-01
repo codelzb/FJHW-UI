@@ -7,7 +7,6 @@
   let validator = (value) => {
     if(value.constructor==Number&&value<=24){
       value=JSON.parse(JSON.stringify({span:value,offset:value}))
-      console.log('value',value);
     }
     let keys = Object.keys(value)
     let valid = true
@@ -19,7 +18,7 @@
     return valid
   }
   export default {
-    name: 'HCol',
+    name: 'hCol',
     props: {
       span: {
         type: [Number, String]

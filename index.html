@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="zh-Hans">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
@@ -7,7 +8,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>UI框架</title>
   <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html {
       --button-height: 32px;
       --font-size: 16px;
@@ -19,17 +25,13 @@
       --border-color-hover: #66b1ff;
     }
 
-    #app {
+    .gl {
       margin: 20px;
     }
-    .gl{
-      margin: 20px;
-    }
+
     body {
       font-size: var(--font-size);
     }
-
-    
   </style>
   <style>
     .demo {
@@ -37,60 +39,89 @@
       border: 1px solid #666;
       height: 100px;
     }
-  .h-sider {
-    background: #333;
-    width: 150px;
-    height: 70vh;
-  }
+
+    .h-sider {
+      background: #333;
+      width: 150px;
+      height: 70vh;
+    }
   </style>
 </head>
+
 <body>
   <div id="app">
     <div class="gl">
-      <h-layout style="height: 100vh;">
-        <h-header class="demo" style="background-color: #2588ef;">1</h-header>
-        <h-layout>
-          <h-sider class="demo" style="background-color: red;">1</h-sider>
-          <h-content class="demo" style="background-color: yellow;">1</h-content>
+      <h-tabs v-model="selectedTab">
+        <template slot="title">
+                <h-tabs-title name="social">社会</h-tabs-title>
+                <h-tabs-title name="finance">财经</h-tabs-title>
+                <h-tabs-title name="sports">体育</h-tabs-title>
+                <h-tabs-title 
+                        name="disabled" 
+                        disabled>
+                        禁用
+                </h-tabs-title>
+        </template>
+                <h-tabs-pane name="social">
+                // 内容
+                </h-tabs-pane>
+                <h-tabs-pane name="finance">
+                // 内容
+                </h-tabs-pane>
+                <h-tabs-pane name="sports">
+                // 内容
+                </h-tabs-pane>
+                <h-tabs-pane name="disabled">
+                // 内容
+                </h-tabs-pane>
+</h-tabs>
+      <div class="gl">
+        <h-layout style="height: 100vh;">
+          <h-header class="demo" style="background-color: #2588ef;">1</h-header>
+          <h-layout>
+            <h-sider class="demo" style="background-color: red;">1</h-sider>
+            <h-content class="demo" style="background-color: yellow;">1</h-content>
+          </h-layout>
+          <h-footer class="demo" style="background-color: #2588ef;">1</h-footer>
         </h-layout>
-        <h-footer class="demo" style="background-color: #2588ef;">1</h-footer>
-      </h-layout>
-    </div>
-    <div class="gl">
-      <h-row gutter="20" style="width: 1000px;">
-        <h-col  :xl="4">1</h-col>
-        <h-col  :xl="4">1</h-col>
-      </h-row>
-    </div>
-    <div class="gl">
-      <h-input readonly></h-input>
-      <h-input disabled></h-input>
-      <h-input error="请输入中文"></h-input>
-      <h-input  v-model="message"></h-input>
-    </div>
-    <h-button icon="info" position='right' @click="showToast1">
-      按钮
-    </h-button>
-    <h-button icon="info" position='left' @click="showToast2">
-      按钮
-    </h-button>
-    <h-button :loading="true" @click="showToast3">
-      按钮
-    </h-button>
-    <div style=" margin: 20px;">
-      <h-button-group>
-        <h-button icon="power" @click="showToast4">
-          上一页
-        </h-button>
-        <h-button icon="power" position='left' @click="showToast5">
-          按钮
-        </h-button>
-        <h-button :loading="true" position='right'>
-          下一页>
-        </h-button>
-      </h-button-group>
+      </div>
+      <div class="gl">
+        <h-row gutter="20" style="width: 1000px;">
+          <h-col :xl="4">1</h-col>
+          <h-col :xl="4">1</h-col>
+        </h-row>
+      </div>
+      <div class="gl">
+        <h-input readonly></h-input>
+        <h-input disabled></h-input>
+        <h-input error="请输入中文"></h-input>
+        <h-input v-model="message"></h-input>
+      </div>
+      <h-button icon="info" position='right' @click="showToast1">
+        按钮
+      </h-button>
+      <h-button icon="info" position='left' @click="showToast2">
+        按钮
+      </h-button>
+      <h-button :loading="true" @click="showToast3">
+        按钮
+      </h-button>
+      <div style=" margin: 20px;">
+        <h-button-group>
+          <h-button icon="power" @click="showToast4">
+            上一页
+          </h-button>
+          <h-button icon="power" position='left' @click="showToast5">
+            按钮
+          </h-button>
+          <h-button :loading="true" position='right'>
+            下一页>
+          </h-button>
+        </h-button-group>
+      </div>
     </div>
   </div>
   <script src="./src/app.js"></script>
 </body>
+
 </html>

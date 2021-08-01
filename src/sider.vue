@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  name: "Hsider",
+  name: "hSider",
   data() {
     return {
       visible: true,

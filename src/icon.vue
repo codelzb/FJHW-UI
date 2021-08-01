@@ -9,7 +9,7 @@
 <script>
 import './svg'
 export default {
-  name:'Hicon',
+  name:'hIcon',
   props:{
       name:{type: String}
   },

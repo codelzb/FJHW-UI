@@ -11,8 +11,10 @@ import Header from './header.vue'
 import Sider from './sider.vue'
 import Content from './content.vue'
 import Footer from './footer.vue'
-import Toast from './message.vue'
 import plugin from './message.js'
+import Tabs from './tabs'
+import TabsTitle from './tabs-title'
+import TabsPane from './tabs-pane'
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
 Vue.component('h-button-group', ButtonGroup)
@@ -24,20 +26,26 @@ Vue.component('h-header', Header)
 Vue.component('h-sider', Sider)
 Vue.component('h-content', Content)
 Vue.component('h-footer', Footer)
-Vue.component('g-toast', Toast)
-// Vue.use(plugin)
 Vue.prototype.$message = plugin;
+Vue.component('h-tabs', Tabs)
+Vue.component('h-tabs-title', TabsTitle)
+Vue.component('h-tabs-pane', TabsPane)
 new Vue({
   el: '#app',
   data: {
     loading1: false,
     loading2: true,
     loading3: false,
-    message: 'hi'
+    message: 'hi',
+    selectedTab: 'social'
   },
   created(){
   },
   methods: {
+    yyy(data){
+      console.log('yyy')
+      console.log(data)
+    },
     inputChange (e) {
       console.log(e)
     },
