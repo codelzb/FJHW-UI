@@ -15,14 +15,7 @@
     }
 
     html {
-      --button-height: 32px;
-      --font-size: 16px;
-      --button-bg: #2588ef;
-      --button-active-bg: #2588ef;
-      --border-radius: 4px;
-      --color: #ffffff;
-      --border-color: #66b1fE;
-      --border-color-hover: #66b1ff;
+      
     }
 
     .gl {
@@ -53,8 +46,27 @@
   <div id="app">
     <div class="gl">
       <div class="gl">
+        <h-collapse v-model="select"  @change="handleChange">
+          <h-collapse-item  name="social" disabled>
+            <template slot="title">
+              hhhhhhhhhhhhhhhhhh<h-icon name="error"></h-icon>
+            </template>
+                      // 内容文本
+          </h-collapse-item>
+          <h-collapse-item title="财经新闻" name="finance">
+                      // 内容文本
+          </h-collapse-item>
+          <h-collapse-item title="科技新闻" name="sicence">
+                      // 内容文本
+          </h-collapse-item>
+          <h-collapse-item title="体育新闻" name="sports">
+                      // 内容文本
+          </h-collapse-item>
+  </h-collapse>
+      </div>
+      <div class="gl">
         <h-popover  trigger='hover'> 
-          <template slot="content">弹出内容1</template>
+          <template slot="content">hover不消失</template>
           <h-button>点击</h-button>
         </h-popover>
         <h-popover position="left">

@@ -16,6 +16,8 @@ import Tabs from './tabs'
 import TabsTitle from './tabs-title'
 import TabsPane from './tabs-pane'
 import Popover from './popover.vue'
+import Collapse from './collapse'
+import CollapseItem from './collapse-item'
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
 Vue.component('h-button-group', ButtonGroup)
@@ -32,6 +34,8 @@ Vue.component('h-tabs', Tabs)
 Vue.component('h-tabs-title', TabsTitle)
 Vue.component('h-tabs-pane', TabsPane)
 Vue.component('h-popover', Popover)
+Vue.component('h-collapse', Collapse)
+Vue.component('h-collapse-item', CollapseItem)
 new Vue({
   el: '#app',
   data: {
@@ -39,11 +43,16 @@ new Vue({
     loading2: true,
     loading3: false,
     message: 'hi',
-    selectedTab: 'social'
+    selectedTab: 'social',
+    selected:'social',
+    select:['social']
   },
   created(){
   },
   methods: {
+    handleChange(val){
+      console.log('手風琴',val);
+    },
     yyy(data){
       console.log('yyy')
       console.log(data)

@@ -38,19 +38,19 @@
     100% { transform: rotate(360deg); }
   }
   .h-button { 
-    font-size: var(--font-size); 
-    height: var(--button-height); 
+    font-size: 16px; 
+    height: 32px; 
     padding: 0 1em;
-    border-radius: var(--border-radius); 
-    border: 1px solid var(--border-color);
-    background: var(--button-bg);
+    border-radius: 4px; 
+    border: 1px solid #66b1fE;
+    background: #2588ef;
     display: inline-flex; 
     justify-content: center; 
     align-items: center;
     vertical-align: middle;
-    color: var(--color);
-    &:hover { border-color: var(--border-color-hover); }
-    &:active { background-color: var(--button-active-bg); }
+    color: #fff;
+    &:hover { border-color: #66b1ff; }
+    &:active { background-color: #2588ef; }
     &:focus { outline: none; }
     > .content { order: 2; }
     > .icon { order: 1; margin-right: .1em; }
