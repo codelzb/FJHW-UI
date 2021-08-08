@@ -21,7 +21,7 @@ export default {
   components: {},
   data () {
     return {
-			 eventBus: new Vue(),
+		 eventBus: new Vue(),
     };
   },
 	 provide () {

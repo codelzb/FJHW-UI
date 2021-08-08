@@ -5,6 +5,4 @@
 </template>
 
 <style lang="scss">
-  .h-footer {
-  }
 </style>

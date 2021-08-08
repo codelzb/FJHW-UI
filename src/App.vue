@@ -2,7 +2,8 @@
   <div id="app">
     <div class="gl">
       <div class="gl">
-        <h-cascader :source="source"></h-cascader>
+        <h-cascader :source.sync="source" popover-height="200px"
+        :selected.sync="selected1" ></h-cascader>
       </div>
       <div class="gl">
         <h-collapse v-model="select" @change="handleChange">
@@ -110,6 +111,7 @@ export default {
       selectedTab: "social",
       selected: "social",
       select: ["social"],
+      selected1:['福建'],
       source: [
         {
           value: "福建",
