@@ -1,5 +1,5 @@
 <template>
-  <div class="cascaderItem" :style="{height: height}">
+  <div class="h-cascaderItem" :style="{height: height}">
     <div class="left">
       <div class="label" v-for="(item,index) in items" @click="onClickLabel(item)" :key="index">
         <span class="name">{{item.name}}</span>
@@ -8,24 +8,24 @@
             <icon class="loading" name="loading"></icon>
           </template>
           <template v-else>
-            <icon class="next" v-if="rightArrowVisible(item)" name="right"></icon>
+            <icon class="next" v-if="rightArrowVisible(item)" name="dot"></icon>
           </template>
         </span>
       </div>
     </div>
     <div class="right" v-if="rightItems">
-      <gulu-cascader-items ref="right" :items="rightItems" :height="height"
+      <h-cascader-items ref="right" :items="rightItems" :height="height"
         :loading-item="loadingItem"
         :load-data="loadData"
-        :level="level+1" :selected="selected" @update:selected="onUpdateSelected"></gulu-cascader-items>
+        :level="level+1" :selected="selected" @update:selected="onUpdateSelected"></h-cascader-items>
     </div>
   </div>
 </template>
 
 <script>
-  import Icon from "./icon"
+  import Icon from './icon'
   export default {
-    name: "GuluCascaderItems",
+    name: "hCascaderItems",
     components: {Icon},
     props: {
       items: {
@@ -54,7 +54,8 @@
       rightItems () {
         if (this.selected[this.level]) {
           let selected = this.items.filter((item) => item.name === this.selected[this.level].name)
-          if (selected && selected[0].children && selected[0].children.length > 0) {
+          console.log('this.selected[this.level]',selected);
+          if (selected && selected[0]&&selected[0].children && selected[0].children.length > 0) {
             return selected[0].children
           }
         }
@@ -70,30 +71,18 @@
         let copy = JSON.parse(JSON.stringify(this.selected))
         copy[this.level] = item
         copy.splice(this.level + 1) // 一句话
-        this.$emit("update:selected", copy)
+        this.$emit('update:selected', copy)
       },
       onUpdateSelected (newSelected) {
-        this.$emit("update:selected", newSelected)
+        this.$emit('update:selected', newSelected)
       }
     }
   }
 </script>
 
-<style  lang="scss">
-  $border-color-hover: #666;
-$border-color: #999;
-$border-color-light: lighten($border-color, 30%);
-$border-radius: 4px;
-$box-shadow-color: rgba(0, 0, 0, 0.5);
-$button-active-bg: #eee;
-$button-bg: white;
-$button-height: 32px;
-$color: #333;
-$font-size: 14px;
-$input-height: 32px;
-$red: #F1453D;
-$grey: #eee;
-  .cascaderItem {
+<style scoped lang="scss">
+  @import "var";
+  .h-cascaderItem {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -105,7 +94,7 @@ $grey: #eee;
     }
     .right {
       height: 100%;
-      border-left: 1px solid lighten($border-color, 30%);
+      border-left: 1px solid $border-color-light;
     }
     .label {
       padding: .5em 1em;

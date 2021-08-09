@@ -3,6 +3,8 @@
     <div class="gl">
       <div class="gl">
         <h-cascader :source.sync="source" popover-height="200px"
+        :selected.sync="selected1" :load-data="loadData"></h-cascader>
+        <h-cascader :source.sync="source1" popover-height="200px"
         :selected.sync="selected1" ></h-cascader>
       </div>
       <div class="gl">
@@ -99,6 +101,22 @@
 </template>
 
 <script>
+import db from './components/db'
+function ajax (parentId = 0) {
+    return new Promise((success, fail) => {
+      setTimeout(() => {
+        let result = db.filter((item) => item.parent_id == parentId)
+        result.forEach(node => {
+          if (db.filter(item => item.parent_id === node.id).length > 0) {
+            node.isLeaf = false
+          }else{
+            node.isLeaf = true
+          }
+        })
+        success(result)
+      }, 1000)
+    })
+  }
 export default {
   name: "App",
   components: {},
@@ -112,48 +130,60 @@ export default {
       selected: "social",
       select: ["social"],
       selected1:['福建'],
-      source: [
+      source:[],
+      source1: [
         {
           value: "福建",
-          label: "福建",
+          name: "福建",
           children: [
             {
               value: "厦门",
-              label: "厦门",
+              name: "厦门",
               children: [
-                { value: "同安区", label: "同安区", children: [{}] },
-                { value: "湖里区", label: "湖里区", children: [{}] },
-                { value: "思明区", label: "思明区", children: [{}] },
+                { value: "同安区", name: "同安区", children: [] },
+                { value: "湖里区", name: "湖里区", children: [] },
+                { value: "思明区", name: "思明区", children: [] },
               ],
             },
             {
               value: "福州",
-              label: "福州",
-              children: [{ value: "鼓楼区", label: "鼓楼区", children: [{}] }],
+              name: "福州",
+              children: [{ value: "鼓楼区", name: "鼓楼区", children: [] }],
             },
-            { value: "莆田", label: "莆田", children: [] },
+            { value: "莆田", name: "莆田", children: [] },
           ],
         },
         {
           value: "广东",
-          label: "广东",
+          name: "广东",
           children: [
             {
               value: "深圳",
-              label: "深圳",
+              name: "深圳",
               children: [
-                { value: "宝安区", label: "宝安区" },
-                { value: "前海区", label: "前海区" },
+                { value: "宝安区", name: "宝安区" },
+                { value: "前海区", name: "前海区" },
               ],
             },
-            { value: "珠海", label: "珠海", children: [] },
+            { value: "珠海", name: "珠海", children: [] },
           ],
         },
       ],
     };
   },
-  created() {},
+  created() {
+     ajax(0).then(result => {
+        console.log(result)
+        this.source = result
+      })
+  },
   methods: {
+    loadData ({id}, updateSource) {
+        ajax(id).then(result => {
+          console.log(result)
+          updateSource(result) // 回调:把别人传给我的函数调用一下
+        })
+      },
     handleChange(val) {
       console.log("手風琴", val);
     },

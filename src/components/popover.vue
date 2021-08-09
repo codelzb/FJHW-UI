@@ -190,7 +190,7 @@ export default {
   border-radius: 4px;
   background: #fdfefe;
   padding: 0.5em 1em;
-  max-width: 20em;
+  // max-width: 20em;
   word-break: break-all;
   position: absolute;
   z-index: 25;
