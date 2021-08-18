@@ -1,5 +1,7 @@
 /* eslint-disable */ 
 import Vue from "vue";
+import './assets/icons/index.js'
+import  "./assets/style/reset.css";
 import App from "./App.vue";
 import Button from './components/button.vue'
 import Icon from './components/icon.vue'
@@ -20,7 +22,7 @@ import Popover from './components/popover.vue'
 import Collapse from './components/collapse'
 import CollapseItem from './components/collapse-item'
 import Cascader from './components/cascader'
-
+import Table from './components/table'
 
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
@@ -41,6 +43,7 @@ Vue.component('h-popover', Popover)
 Vue.component('h-collapse', Collapse)
 Vue.component('h-collapse-item', CollapseItem)
 Vue.component('h-cascader', Cascader)
+Vue.component('h-table', Table)
 Vue.config.productionTip = false;
 
 new Vue({

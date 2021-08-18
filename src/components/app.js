@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import '../style/reset.css'
 import Button from './button.vue'
 import Icon from './icon.vue'
 import ButtonGroup from './button-group.vue'
@@ -121,10 +120,10 @@ new Vue({
   }
 })
 
-import chai from 'chai'
-import spies from 'chai-spies'
-chai.use(spies)
-const expect = chai.expect
+// import chai from 'chai'
+// import spies from 'chai-spies'
+// chai.use(spies)
+// const expect = chai.expect
 /*
 try {
 

@@ -2,17 +2,25 @@
   <div id="app">
     <div class="gl">
       <div class="gl">
-        <h-cascader :source.sync="source" popover-height="200px"
-        :selected.sync="selected1" :load-data="loadData"></h-cascader>
-        <h-cascader :source.sync="source1" popover-height="200px"
-        :selected.sync="selected1" ></h-cascader>
+        <span>{{ selectedTable }}</span>
+        <h-table :data.sync="data" :columns.sync="columns" checkable expand="description" numberVisable bordered compact :selected-items.sync="selectedTable" :height="400" :loading="loading" @sort-change="sortChange">
+          <template slot-scope="scope">
+            <button @click="edit(scope.item)">编辑</button>
+            <button @click="view(scope.item)">删除</button>
+          </template>
+        </h-table>
+      </div>
+      <div class="gl">
+        <h-table :data.sync="data" :columns.sync="columns" bordered :striped="false" :height="300" :sortMethod="aaa"  :selected-items.sync="selectedTable"></h-table>
+      </div>
+      <div class="gl">
+        <h-cascader :source.sync="source" popover-height="200px" :selected.sync="selected1" :load-data="loadData"></h-cascader>
+        <h-cascader :source.sync="source1" popover-height="200px" :selected.sync="selected1"></h-cascader>
       </div>
       <div class="gl">
         <h-collapse v-model="select" @change="handleChange">
           <h-collapse-item name="social" disabled>
-            <template slot="title">
-              hhhhhhhhhhhhhhhhhh<h-icon name="error"></h-icon>
-            </template>
+            <template slot="title"> hhhhhhhhhhhhhhhhhh<h-icon name="error"></h-icon></template>
             // 内容文本
           </h-collapse-item>
           <h-collapse-item title="财经新闻" name="finance">
@@ -61,9 +69,7 @@
           <h-header class="demo" style="background-color: #2588ef">1</h-header>
           <h-layout>
             <h-sider class="demo" style="background-color: red">1</h-sider>
-            <h-content class="demo" style="background-color: yellow"
-              >1</h-content
-            >
+            <h-content class="demo" style="background-color: yellow">1</h-content>
           </h-layout>
           <h-footer class="demo" style="background-color: #2588ef">1</h-footer>
         </h-layout>
@@ -101,27 +107,28 @@
 </template>
 
 <script>
-import db from './components/db'
-function ajax (parentId = 0) {
-    return new Promise((success, fail) => {
-      setTimeout(() => {
-        let result = db.filter((item) => item.parent_id == parentId)
-        result.forEach(node => {
-          if (db.filter(item => item.parent_id === node.id).length > 0) {
-            node.isLeaf = false
-          }else{
-            node.isLeaf = true
-          }
-        })
-        success(result)
-      }, 1000)
-    })
-  }
+import db from "./components/db";
+function ajax(parentId = 0) {
+  return new Promise((success, fail) => {
+    setTimeout(() => {
+      let result = db.filter((item) => item.parent_id == parentId);
+      result.forEach((node) => {
+        if (db.filter((item) => item.parent_id === node.id).length > 0) {
+          node.isLeaf = false;
+        } else {
+          node.isLeaf = true;
+        }
+      });
+      success(result);
+    }, 1000);
+  });
+}
 export default {
   name: "App",
   components: {},
   data() {
     return {
+      loading:false,
       loading1: false,
       loading2: true,
       loading3: false,
@@ -129,8 +136,8 @@ export default {
       selectedTab: "social",
       selected: "social",
       select: ["social"],
-      selected1:['福建'],
-      source:[],
+      selected1: ["福建"],
+      source: [],
       source1: [
         {
           value: "福建",
@@ -169,21 +176,73 @@ export default {
           ],
         },
       ],
+      selectedTable: [],
+      data: [
+        { id: 1, name: "luo", score: "100",description:'xxxxxxxxx'},
+        { id: 2, name: "zong", score: "90",description:'xxxxxxxxx'},
+        { id: 3, name: "bin", score: "80" },
+        { id: 4, name: "luo", score: "100" },
+        { id: 5, name: "zong", score: "90" },
+        { id: 6, name: "bin", score: "80" },
+        { id: 7, name: "luo", score: "100" },
+        { id: 8, name: "zong", score: "90" },
+        { id: 9, name: "bin", score: "80" },
+         { id: 10, name: "bin", score: "80" },
+        { id: 11, name: "luo", score: "100" },
+        { id: 12, name: "zong", score: "90" },
+        { id: 13, name: "bin", score: "80" },
+         { id: 14, name: "bin", score: "80" },
+        { id: 15, name: "luo", score: "100" },
+        { id: 16, name: "zong", score: "90" },
+        { id: 17, name: "bin", score: "80" },
+      ],
+      columns: [
+        { name: "姓名", key: "name",width:100 },
+        { name: "分数", key: "score", sortable: true ,},
+      ],
     };
   },
   created() {
-     ajax(0).then(result => {
-        console.log(result)
-        this.source = result
-      })
+    ajax(0).then((result) => {
+      this.source = result;
+    });
   },
   methods: {
-    loadData ({id}, updateSource) {
-        ajax(id).then(result => {
-          console.log(result)
-          updateSource(result) // 回调:把别人传给我的函数调用一下
-        })
-      },
+    edit(item){
+      alert(`${item.id}`)
+    },
+    view(item){
+       alert(`${item.id}`)
+    },
+    sortChange(data){
+      this.loading=!this.loading
+      setTimeout(() => {
+        this.loading=!this.loading
+      }, 1000);
+      console.log('data',data);
+    },
+    aaa(a, b) {
+      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return 1;
+      }
+      if (nameA > nameB) {
+        return -1;
+      }
+
+      // names must be equal
+      return 0;
+    },
+    x({ selected, item, index }) {
+      console.log("selected", selected, item, index);
+    },
+    loadData({ id }, updateSource) {
+      ajax(id).then((result) => {
+        console.log(result);
+        updateSource(result); // 回调:把别人传给我的函数调用一下
+      });
+    },
     handleChange(val) {
       console.log("手風琴", val);
     },
@@ -228,26 +287,23 @@ export default {
       });
     },
     showToast(position) {
-      this.$toast(
-        `你的智商目前为 ${parseInt(Math.random() * 100)}。你的智商需要充值！`,
-        {
-          position,
-          enableHtml: false,
-          closeButton: {
-            text: "已充值",
-            callback() {
-              console.log("他说已经充值智商了");
-            },
+      this.$toast(`你的智商目前为 ${parseInt(Math.random() * 100)}。你的智商需要充值！`, {
+        position,
+        enableHtml: false,
+        closeButton: {
+          text: "已充值",
+          callback() {
+            console.log("他说已经充值智商了");
           },
-          autoClose: 3,
-        }
-      );
+        },
+        autoClose: 3,
+      });
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
