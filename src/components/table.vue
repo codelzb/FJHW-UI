@@ -5,15 +5,15 @@
       <table class="h-table" :class="{ bordered, compact, striped }" ref="table">
         <thead>
           <tr>
-            <th v-if="expand" :style="{width:'50px'}" class="h-table-center"></th>
-            <th v-if="checkable" :style="{width:'50px'}" class="h-table-center"><input type="checkbox" @change="onChangeAllItems($event)" :checked="areAllItemsSelected" ref="allChecked" /></th>
-            <th :style="{width:'50px'}" class="h-table-center" v-if="numberVisable">#</th>
-            <th :style="{width:column.width+'px'}" v-for="column in columns" :key="column.key">
+            <th v-if="expand" :style="{ width: '50px' }" class="h-table-center"></th>
+            <th v-if="checkable" :style="{ width: '50px' }" class="h-table-center"><input type="checkbox" @change="onChangeAllItems($event)" :checked="areAllItemsSelected" ref="allChecked" /></th>
+            <th :style="{ width: '50px' }" class="h-table-center" v-if="numberVisable">#</th>
+            <th :style="{ width: column.width + 'px' }" v-for="column in columns" :key="column.field">
               <div class="h-table-header">
                 {{ column.name }}
                 <span class="h-table-sorter" v-if="'sortable' in column">
-                  <h-icon name="arrow-up-filling2" :class="{ active: column['sortable'] === 'descending' }" @click="changeOrderBy(column['key'], 'descending', column)" />
-                  <h-icon name="arrow-down-filling2" :class="{ active: column['sortable'] === 'ascending' }" @click="changeOrderBy(column['key'], 'ascending', column)" />
+                  <h-icon name="arrow-up-filling2" :class="{ active: column['sortable'] === 'descending' }" @click="changeOrderBy(column['field'], 'descending', column)" />
+                  <h-icon name="arrow-down-filling2" :class="{ active: column['sortable'] === 'ascending' }" @click="changeOrderBy(column['field'], 'ascending', column)" />
                 </span>
               </div>
             </th>
@@ -22,22 +22,29 @@
         </thead>
         <tbody>
           <template v-for="(item, index) in data">
-          <tr :key="item.id">
-            <td v-if="expand" :style="{width:'50px'}" class="h-table-center">
-              <h-icon name="arrow-right" class="h-table-expandIcon" @click="expandItem(item.id)"></h-icon>
-             </td>
-            <td v-if="checkable" :style="{width:'50px'}" class="h-table-center"><input type="checkbox" @change="onChangeItem(item, index, $event)" :checked="inSelectItmes(item)" /></td>
-            <td :style="{width:'50px'}" class="h-table-center" v-if="numberVisable">{{ index + 1 }}</td>
-            <template v-for="column in columns">
-              <td :style="{width:column.width+'px'}" :key="column.key">{{ item[column.key] }}</td>
-            </template>
-            <td v-if="$scopedSlots.default"><slot :item="item"></slot></td>
-          </tr>
-          <tr v-if="inExpandIds(item.id)" :key="`${item.id}-expand`">
-            <td :colspan="columns.length+expandedCellColSpan">
-              {{item[expand]}}
-            </td>
-          </tr>
+            <tr :key="item.id">
+              <td v-if="expand" :style="{ width: '50px' }" class="h-table-center">
+                <h-icon name="arrow-right" class="h-table-expandIcon" @click="expandItem(item.id)"></h-icon>
+              </td>
+              <td v-if="checkable" :style="{ width: '50px' }" class="h-table-center"><input type="checkbox" @change="onChangeItem(item, index, $event)" :checked="inSelectItmes(item)" /></td>
+              <td :style="{ width: '50px' }" class="h-table-center" v-if="numberVisable">{{ index + 1 }}</td>
+              <template v-for="column in columns">
+                <td :style="{ width: column.width + 'px' }" :key="column.field">
+                  <template v-if="column.render">
+                    <vnodes :vnodes="column.render({value: item[column.field]})"></vnodes>
+                  </template>
+                  <template v-else>
+                    {{ item[column.field] }}
+                  </template>
+                  </td>
+              </template>
+              <td v-if="$scopedSlots.default"><slot :item="item"></slot></td>
+            </tr>
+            <tr v-if="inExpandIds(item.id)" :key="`${item.id}-expand`">
+              <td :colspan="columns.length + expandedCellColSpan">
+                {{ item[expand] }}
+              </td>
+            </tr>
           </template>
         </tbody>
       </table>
@@ -53,10 +60,10 @@ import Input from "./input.vue";
 import { orderBy } from "./util.js";
 export default {
   props: {
-    columns: {
-      type: Array,
-      require: true,
-    },
+    // columns: {
+    //   type: Array,
+    //   require: true,
+    // },
     selectedItems: {
       type: Array,
       default: () => [],
@@ -68,9 +75,9 @@ export default {
         return !(array.filter((item) => item.id === undefined).length > 0);
       },
     },
-    expand:{
-       type: String,
-       default: '',
+    expand: {
+      type: String,
+      default: "",
     },
     loading: {
       type: Boolean,
@@ -111,12 +118,20 @@ export default {
       },
     },
   },
-  components: { Input, Hicon },
+  components: {
+    Input,
+    Hicon,
+    vnodes: {
+      functional: true,
+      render: (h, ctx) => ctx.props.vnodes,
+    },
+  },
   data() {
     return {
       copyData: this.data,
-      table2:'',
-      expandIds:[]
+      table2: "",
+      expandIds: [],
+      columns: [],
     };
   },
   watch: {
@@ -145,25 +160,38 @@ export default {
         return false;
       }
     },
-    expandedCellColSpan(){
-      let result=0
-      if(this.checkable){result+=1}
-      if(this.expand){result+=1}
-      if(this.numberVisable){result+=1}
-      return result
-    }
+    expandedCellColSpan() {
+      let result = 0;
+      if (this.checkable) {
+        result += 1;
+      }
+      if (this.expand) {
+        result += 1;
+      }
+      if (this.numberVisable) {
+        result += 1;
+      }
+      return result;
+    },
   },
   created() {},
   mounted() {
+    console.log("this.$slots.default", this.$slots.default);
+    this.columns = this.$slots.default.map((node) => {
+      let { name, field, width } = node.componentOptions.propsData;
+      let render = node.data.scopedSlots && node.data.scopedSlots.default;
+      return { name, field, width, render };
+    });
+    console.log("this.columns", this.columns);
     let table2 = this.$refs.table.cloneNode(false);
     this.table2 = table2;
     table2.classList.add("h-table-copy");
     // table2.appendChild(this.$refs.table.children[0]);
-    let tHead=this.$refs.table.children[0]
-    let {height}=tHead.getBoundingClientRect()
-    this.$refs.tableWrapper.style.marginTop=height+'px'
-    this.$refs.tableWrapper.style.height=this.height-height+'px'
-    table2.appendChild(tHead)
+    let tHead = this.$refs.table.children[0];
+    let { height } = tHead.getBoundingClientRect();
+    this.$refs.tableWrapper.style.marginTop = height + "px";
+    this.$refs.tableWrapper.style.height = this.height - height + "px";
+    table2.appendChild(tHead);
     this.$refs.wrapper.appendChild(table2);
     // this.updateHeadersWidth();
     // this.onWindowResize = () => this.upforceUpdateHeadersWidth();
@@ -174,45 +202,45 @@ export default {
     // window.removeEventListener("resize", this.onWindowResize);
   },
   methods: {
-    inExpandIds(id){
-      return this.expandIds.indexOf(id)>=0
+    inExpandIds(id) {
+      return this.expandIds.indexOf(id) >= 0;
     },
-    expandItem(id){
-      if(this.inExpandIds(id)){
-        this.expandIds.splice(this.expandIds.indexOf(id),1)
-      }else{
-        this.expandIds.push(id)
+    expandItem(id) {
+      if (this.inExpandIds(id)) {
+        this.expandIds.splice(this.expandIds.indexOf(id), 1);
+      } else {
+        this.expandIds.push(id);
       }
     },
-    updateHeadersWidth(){
+    updateHeadersWidth() {
       //TODO:动态更新表头宽度...未完成
-      let table2=this.table2
-      let tableHeader=Array.from(this.$refs.table.children).filter(node=>node.tagName.toLowerCase()==='thead')[0]
-      let tableHeader2
-      Array.from(table2.children).map(node=>{
-        if(node.tagName.toLowerCase()!=='thead'){
-          node.remove
-        }else{
-          tableHeader2=node
+      let table2 = this.table2;
+      let tableHeader = Array.from(this.$refs.table.children).filter((node) => node.tagName.toLowerCase() === "thead")[0];
+      let tableHeader2;
+      Array.from(table2.children).map((node) => {
+        if (node.tagName.toLowerCase() !== "thead") {
+          node.remove;
+        } else {
+          tableHeader2 = node;
         }
-      })
-      Array.from(tableHeader.children[0].children).map((th,i)=>{
-        const {width}=th.getBoundingClientRect()
-        tableHeader2.children[0].children[i].style.width=width+'px'
-      })
+      });
+      Array.from(tableHeader.children[0].children).map((th, i) => {
+        const { width } = th.getBoundingClientRect();
+        tableHeader2.children[0].children[i].style.width = width + "px";
+      });
     },
-    changeOrderBy(key, value, column) {
+    changeOrderBy(field, value, column) {
       let copy = JSON.parse(JSON.stringify(this.columns));
       copy.forEach((e) => {
-        if (e.key == key) {
+        if (e.field == field) {
           if (value === e["sortable"]) {
             e["sortable"] = null;
           } else {
             e["sortable"] = value;
           }
-          let { text, key } = column;
-          this.$emit("sort-change", { column: { text, key }, order: e["sortable"] });
-          this.$emit("update:data", e["sortable"] ? orderBy(this.data, e.key, e["sortable"], this.sortMethod, this.sortBy) : this.copyData);
+          let { text, field } = column;
+          this.$emit("sort-change", { column: { text, field }, order: e["sortable"] });
+          this.$emit("update:data", e["sortable"] ? orderBy(this.data, e.field, e["sortable"], this.sortMethod, this.sortBy) : this.copyData);
         }
       });
       this.$emit("update:columns", copy);
@@ -323,17 +351,17 @@ export default {
     }
   }
   &-copy {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
   }
-  &-expandIcon{
+  &-expandIcon {
     width: 15px;
     height: 15px;
   }
-  & &-center{
+  & &-center {
     text-align: center;
   }
 }
