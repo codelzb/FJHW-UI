@@ -5,21 +5,17 @@
         <span>{{ selectedTable }}</span>
         <h-table :data.sync="data" checkable expand="description" numberVisable bordered compact :selected-items.sync="selectedTable" :height="400" :loading="loading" @sort-change="sortChange">
           <h-table-column name="姓名" field="name" :width="100"></h-table-column>
-          <h-table-column name="分数" field="score" >
-            <template slot-scope="scope">
-            <h-cascader :source.sync="source" popover-height="200px" :selected.sync="selected1" :load-data="loadData"></h-cascader>
-          </template>
-          </h-table-column>
-          <!-- <template slot-scope="scope">
+          <h-table-column name="分数" field="score"></h-table-column>
+          <template slot-scope="scope">
             <button @click="edit(scope.item)">编辑</button>
             <button @click="view(scope.item)">删除</button>
-          </template> -->
+          </template>
         </h-table>
       </div>
       <!-- <div class="gl">
         <h-table :data.sync="data" :columns.sync="columns" bordered :striped="false" :height="300" :sortMethod="aaa"  :selected-items.sync="selectedTable"></h-table>
       </div> -->
-      <div class="gl">
+      <div class="gl" ref="wrapper">
         <h-cascader :source.sync="source" popover-height="200px" :selected.sync="selected1" :load-data="loadData"></h-cascader>
         <h-cascader :source.sync="source1" popover-height="200px" :selected.sync="selected1"></h-cascader>
       </div>
@@ -129,12 +125,43 @@ function ajax(parentId = 0) {
     }, 1000);
   });
 }
+let arr = [
+  { name: "luo", score: "100", description: "xxxxxxxxx" },
+  { name: "zong", score: "90", description: "xxxxxxxxx" },
+  { name: "bin", score: "80" },
+  { name: "luo", score: "100" },
+  { name: "zong", score: "90" },
+  { name: "bin", score: "80" },
+  { name: "luo", score: "100" },
+  { name: "zong", score: "90" },
+  { name: "bin", score: "80" },
+  { name: "bin", score: "80" },
+  { name: "luo", score: "100" },
+  { name: "zong", score: "90" },
+  { name: "bin", score: "80" },
+  { name: "bin", score: "80" },
+  { name: "luo", score: "100" },
+  { name: "zong", score: "90" },
+  { name: "bin", score: "80" },
+  { name: "luo", score: "100" },
+  { name: "zong", score: "90" },
+  { name: "bin", score: "80" },
+];
+let bigArr = [];
+for (let i = 1; i < 51; i++) {
+  bigArr.push(
+    ...arr.map((item, index) => {
+      return { id: i * 20 + index, ...item };
+    })
+  );
+}
+console.log("bigArr", bigArr);
 export default {
   name: "App",
   components: {},
   data() {
     return {
-      loading:false,
+      loading: false,
       loading1: false,
       loading2: true,
       loading3: false,
@@ -183,28 +210,10 @@ export default {
         },
       ],
       selectedTable: [],
-      data: [
-        { id: 1, name: "luo", score: "100",description:'xxxxxxxxx'},
-        { id: 2, name: "zong", score: "90",description:'xxxxxxxxx'},
-        { id: 3, name: "bin", score: "80" },
-        { id: 4, name: "luo", score: "100" },
-        { id: 5, name: "zong", score: "90" },
-        { id: 6, name: "bin", score: "80" },
-        { id: 7, name: "luo", score: "100" },
-        { id: 8, name: "zong", score: "90" },
-        { id: 9, name: "bin", score: "80" },
-         { id: 10, name: "bin", score: "80" },
-        { id: 11, name: "luo", score: "100" },
-        { id: 12, name: "zong", score: "90" },
-        { id: 13, name: "bin", score: "80" },
-         { id: 14, name: "bin", score: "80" },
-        { id: 15, name: "luo", score: "100" },
-        { id: 16, name: "zong", score: "90" },
-        { id: 17, name: "bin", score: "80" },
-      ],
+      data: bigArr,
       columns: [
-        { name: "姓名", field: "name",width:100 },
-        { name: "分数", field: "score", sortable: true ,},
+        { name: "姓名", field: "name", width: 100 },
+        { name: "分数", field: "score", sortable: true },
       ],
     };
   },
@@ -213,19 +222,20 @@ export default {
       this.source = result;
     });
   },
+  mounted() {},
   methods: {
-    edit(item){
-      alert(`${item.id}`)
+    edit(item) {
+      alert(`${item.id}`);
     },
-    view(item){
-       alert(`${item.id}`)
+    view(item) {
+      alert(`${item.id}`);
     },
-    sortChange(data){
-      this.loading=!this.loading
+    sortChange(data) {
+      this.loading = !this.loading;
       setTimeout(() => {
-        this.loading=!this.loading
+        this.loading = !this.loading;
       }, 1000);
-      console.log('data',data);
+      console.log("data", data);
     },
     aaa(a, b) {
       var nameA = a.name.toUpperCase(); // ignore upper and lowercase

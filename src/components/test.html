@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>clientX/clientY example</title>
+    <style>
+        *{
+            margin: 0px;
+            padding:0px;
+        }
+        span{
+            border: 100px solid red;
+            padding: 20px;
+            display: block;
+        }
+        table{
+            width: 500px;
+            height: 500px;
+            background-color: #eee;
+            padding: 40px;
+            
+        }
+        th{
+                background-color: yellow;
+                padding: 200px;
+       }
+            section{
+                width: 400px;
+                height: 60px;
+                background-color: green;
+                padding: 200px;
+            }
+        div{
+            margin-left: 400px;
+            margin-top: 400px;
+            width: 600px;
+            height: 600px;
+            background-color: #333;
+            padding: 400px;
+        }
+    </style>
+    <script>
+      function showCoords(evt){
+          console.log('1111');
+          console.log('elt.getClientRects();',document.getElementById('div').clientTop);
+        alert(
+            'offsetleft' + document.getElementById("div").offsetLeft+"\n" +
+            'offsettop' + document.getElementById("div").offsetTop+"\n" +
+          "clientX left: " + evt.clientX +'|'+ evt.currentTarget.getBoundingClientRect().left+"\n" +
+          "clientY top: " + evt.clientY +'|'+ evt.currentTarget.getBoundingClientRect().top+ "\n"
+        );
+      }
+    </script>
+  </head>
+  <body>
+      <div>
+          <section>
+                <span id="div" onmousedown="showCoords(event)">To display .</span>
+            </section>    
+      </div>
+  </body>
+</html>
