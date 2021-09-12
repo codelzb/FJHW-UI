@@ -39,7 +39,34 @@
         }
     </style>
     <script>
+
+      let obj={
+        o:{
+          b:{
+            j:1
+          }
+        }
+      }
+      
+      console.log('obj.o.b.j3',obj?.o?.b?.j);
+      console.log('obj.o.b.j4',obj?.o?.b?.a?.b);
+      console.log('obj.o.b.j1',obj.o.b.j);
+      console.log('obj.o.b.j2',obj.o.b.a.b);
+
+      function bbb(){
+        let a='0'
+        console.log(isNaN('0'),isNaN('aaa'),isNaN(NaN),Number.isFinite(a));
+        console.log('a', typeof a);
+      }
+      bbb(1,2,3,4,5)
+
       function showCoords(evt){
+        var div = document.getElementById("div")
+var btn = document.getElementById("button1");
+div.addEventListener("click" , function(){alert("第一次执行");} , true);        //1
+div.addEventListener("click" , function(){alert("第二次执行");} , true);        //2
+btn.addEventListener("click" , function(){alert("button 执行");});            //3
+return 
           console.log('1111');
           console.log('elt.getClientRects();',document.getElementById('div').clientTop);
         alert(
@@ -55,6 +82,7 @@
       <div>
           <section>
                 <span id="div" onmousedown="showCoords(event)">To display .</span>
+                <button id="button1">1111</button>
             </section>    
       </div>
   </body>

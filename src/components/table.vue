@@ -1,53 +1,56 @@
 <!--  -->
 <template>
   <div class="h-table-wrapper" ref="wrapper">
-    <div :style="{ height, overflow: 'auto' }" ref="tableWrapper">
-      <table class="h-table" :class="{ bordered, compact, striped }" ref="table">
-        <thead>
-          <tr>
-            <th v-if="expand" :style="{ width: '50px' }" class="h-table-center"></th>
-            <th v-if="checkable" :style="{ width: '50px' }" class="h-table-center"><input type="checkbox" @change="onChangeAllItems($event)" :checked="areAllItemsSelected" ref="allChecked" /></th>
-            <th :style="{ width: '50px' }" class="h-table-center" v-if="numberVisable">#</th>
-            <th :style="{ width: column.width + 'px' }" v-for="column in columns" :key="column.field">
-              <div class="h-table-header">
-                {{ column.name }}
-                <span class="h-table-sorter" v-if="'sortable' in column">
-                  <h-icon name="arrow-up-filling2" :class="{ active: column['sortable'] === 'descending' }" @click="changeOrderBy(column['field'], 'descending', column)" />
-                  <h-icon name="arrow-down-filling2" :class="{ active: column['sortable'] === 'ascending' }" @click="changeOrderBy(column['field'], 'ascending', column)" />
-                </span>
-              </div>
-            </th>
-            <th v-if="$scopedSlots.default"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="(item, index) in data">
-            <tr :key="item.id">
-              <td v-if="expand" :style="{ width: '50px' }" class="h-table-center">
-                <h-icon name="arrow-right" class="h-table-expandIcon" @click="expandItem(item.id)"></h-icon>
-              </td>
-              <td v-if="checkable" :style="{ width: '50px' }" class="h-table-center"><input type="checkbox" @change="onChangeItem(item, index, $event)" :checked="inSelectItmes(item)" /></td>
-              <td :style="{ width: '50px' }" class="h-table-center" v-if="numberVisable">{{ index + 1 }}</td>
-              <template v-for="column in columns">
-                <td :style="{ width: column.width + 'px' }" :key="column.field">
-                  <template v-if="column.render">
-                    <vnodes :vnodes="column.render({value: item[column.field]})"></vnodes>
-                  </template>
-                  <template v-else>
-                    {{ item[column.field] }}
-                  </template>
+    <div ref="scroll" style="overflow: auto;position:relative;" @scroll="handleScroll">
+      <div class="h-table-view-phantom" :style="{ height: contentHeight + 'px' }"></div>
+      <div ref="tableWrapper">
+        <table class="h-table" :class="{ bordered, compact, striped }" ref="table">
+          <thead>
+            <tr>
+              <th v-if="expand" :style="{ width: '50px' }" class="h-table-center"></th>
+              <th v-if="checkable" :style="{ width: '50px' }" class="h-table-center"><input type="checkbox" @change="onChangeAllItems($event)" :checked="areAllItemsSelected" ref="allChecked" /></th>
+              <th :style="{ width: '50px' }" class="h-table-center" v-if="numberVisable">#</th>
+              <th :style="{ width: column.width + 'px' }" v-for="column in columns" :key="column.field">
+                <div class="h-table-header">
+                  {{ column.name }}
+                  <span class="h-table-sorter" v-if="'sortable' in column">
+                    <h-icon name="arrow-up-filling2" :class="{ active: column['sortable'] === 'descending' }" @click="changeOrderBy(column['field'], 'descending', column)" />
+                    <h-icon name="arrow-down-filling2" :class="{ active: column['sortable'] === 'ascending' }" @click="changeOrderBy(column['field'], 'ascending', column)" />
+                  </span>
+                </div>
+              </th>
+              <th v-if="$scopedSlots.default"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="(item, index) in visibleData">
+              <tr :key="item.id">
+                <td v-if="expand" :style="{ width: '50px' }" class="h-table-center">
+                  <h-icon name="arrow-right" class="h-table-expandIcon" @click="expandItem(item.id)"></h-icon>
+                </td>
+                <td v-if="checkable" :style="{ width: '50px' }" class="h-table-center"><input type="checkbox" @change="onChangeItem(item, index, $event)" :checked="inSelectItmes(item)" /></td>
+                <td :style="{ width: '50px' }" class="h-table-center" v-if="numberVisable">{{ index + 1 }}</td>
+                <template v-for="column in columns">
+                  <td :style="{ width: column.width + 'px',height: itemHeight + 'px' }" :key="column.field">
+                    <template v-if="column.render">
+                      <vnodes :vnodes="column.render({ value: item[column.field] })"></vnodes>
+                    </template>
+                    <template v-else>
+                      {{ item[column.field] }}
+                    </template>
                   </td>
-              </template>
-              <td v-if="$scopedSlots.default"><slot :item="item"></slot></td>
-            </tr>
-            <tr v-if="inExpandIds(item.id)" :key="`${item.id}-expand`">
-              <td :colspan="columns.length + expandedCellColSpan">
-                {{ item[expand] }}
-              </td>
-            </tr>
-          </template>
-        </tbody>
-      </table>
+                </template>
+                <td v-if="$scopedSlots.default"><slot :item="item"></slot></td>
+              </tr>
+              <tr v-if="inExpandIds(item.id)" :key="`${item.id}-expand`">
+                <td :colspan="columns.length + expandedCellColSpan">
+                  {{ item[expand] }}
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="h-table-loading" v-if="loading">
       <h-icon name="loading"></h-icon>
@@ -59,6 +62,7 @@ import Hicon from "./icon.vue";
 import Input from "./input.vue";
 import { orderBy } from "./util.js";
 export default {
+  name: "hTable",
   props: {
     // columns: {
     //   type: Array,
@@ -120,6 +124,10 @@ export default {
         return val.every((order) => ["ascending", "descending", null].indexOf(order) > -1);
       },
     },
+    itemHeight: {
+      type: Number,
+      default: 40,
+    },
   },
   components: {
     Input,
@@ -135,6 +143,8 @@ export default {
       table2: "",
       expandIds: [],
       columns: [],
+
+      visibleData: [],
     };
   },
   watch: {
@@ -174,13 +184,19 @@ export default {
       if (this.numberVisable) {
         result += 1;
       }
-      return result;
+      return result+1;
+    },
+    contentHeight() {
+      console.log("this.data.length * this.itemHeight ", this.data.length * this.itemHeight);
+      return this.data.length * this.itemHeight + "px";
+    },
+    visibleDataHeight() {
+      return this.visibleData.length * this.itemHeight + "px";
     },
   },
   created() {},
   mounted() {
-    console.log('getBoundingClientRect',this.$refs.table.getBoundingClientRect().top,this.clientY);
-    console.log("this.$slots.default",this.$slots.default);
+    console.log("this.$slots.default", this.$slots.default);
     this.columns = this.$slots.default.map((node) => {
       let { name, field, width } = node.componentOptions.propsData;
       let render = node.data.scopedSlots && node.data.scopedSlots.default;
@@ -200,12 +216,29 @@ export default {
     // this.updateHeadersWidth();
     // this.onWindowResize = () => this.upforceUpdateHeadersWidth();
     // window.addEventListener("resize", this.onWindowResize);
+
+    //虚拟列表
+    this.updateVisibleData();
   },
   beforeDestroy() {
     this.table2.remove();
     // window.removeEventListener("resize", this.onWindowResize);
   },
   methods: {
+    updateVisibleData(scrollTop) {
+      scrollTop = scrollTop || 0;
+      const visibleCount = Math.ceil(this.$refs.tableWrapper.clientHeight / this.itemHeight);
+      const start = Math.floor(scrollTop / this.itemHeight);
+      const end = start + visibleCount;
+      console.log("start", start, end);
+      this.visibleData = this.data.slice(start, end);
+      this.$refs.tableWrapper.style.webkitTransform = `translate3d(0, ${start * this.itemHeight}px, 0)`;
+    },
+    handleScroll() {
+      const scrollTop = this.$refs.scroll.scrollTop;
+      console.log('scrollTop',scrollTop);
+      this.updateVisibleData(scrollTop);
+    },
     inExpandIds(id) {
       return this.expandIds.indexOf(id) >= 0;
     },
@@ -310,6 +343,14 @@ export default {
       }
     }
   }
+  &-view-phantom {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    height: 40000px;
+  }
   &-sorter {
     display: inline-flex;
     flex-direction: column;
@@ -336,7 +377,7 @@ export default {
   }
   &-wrapper {
     position: relative;
-    overflow: auto;
+    // overflow: auto;
   }
   &-loading {
     background-color: rgba(255, 255, 255, 0.7);

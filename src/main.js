@@ -24,6 +24,7 @@ import CollapseItem from './components/collapse-item'
 import Cascader from './components/cascader'
 import Table from './components/table'
 import TableColumn from './components/table-column.vue'
+import Scrollbar from './components/scrollBar/main.js'
 Vue.component('h-button', Button)
 Vue.component('h-icon', Icon)
 Vue.component('h-button-group', ButtonGroup)
@@ -45,6 +46,7 @@ Vue.component('h-collapse-item', CollapseItem)
 Vue.component('h-cascader', Cascader)
 Vue.component('h-table', Table)
 Vue.component('h-table-column', TableColumn)
+Vue.component('h-scroll', Scrollbar)
 Vue.config.productionTip = false;
 
 new Vue({

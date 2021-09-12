@@ -1,11 +1,25 @@
 <template>
   <div id="app">
     <div class="gl">
+      <div class="scroll" style="height:200px;width:250px;">
+        <h-scroll style="height:200px;width:250px;">
+          <div style="width:300px;height:700px;border:solid;">
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+            <p>lzb无敌</p>
+          </div>
+        </h-scroll>
+      </div>
       <div class="gl">
         <span>{{ selectedTable }}</span>
         <h-table :data.sync="data" checkable expand="description" numberVisable bordered compact :selected-items.sync="selectedTable" :height="400" :loading="loading" @sort-change="sortChange">
           <h-table-column name="姓名" field="name" :width="100"></h-table-column>
-          <h-table-column name="分数" field="score"></h-table-column>
+          <h-table-column name="分数" field="score" :width="100"></h-table-column>
           <template slot-scope="scope">
             <button @click="edit(scope.item)">编辑</button>
             <button @click="view(scope.item)">删除</button>
