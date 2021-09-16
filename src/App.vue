@@ -354,4 +354,6 @@ export default {
   width: 150px;
   height: 70vh;
 }
+/deep/ .el-scrollbar__wrap{  overflow-x: hidden;
+}
 </style>
